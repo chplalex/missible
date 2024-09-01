@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:missible/common/app_constants.dart';
 
 class AnimatedCircle extends StatefulWidget {
-  final double size;
+  final double diameter;
 
-  const AnimatedCircle({super.key, required this.size});
+  const AnimatedCircle({super.key, required this.diameter});
 
   @override
   State<AnimatedCircle> createState() => _AnimatedCircleState();
@@ -22,7 +22,7 @@ class _AnimatedCircleState extends State<AnimatedCircle> with SingleTickerProvid
     super.initState();
     _controller = AnimationController(vsync: this, duration: _forwardDuration, reverseDuration: _reverseDuration);
 
-    _animation = Tween<double>(begin: 0.0, end: widget.size)
+    _animation = Tween<double>(begin: 0.0, end: widget.diameter)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut))
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -47,7 +47,7 @@ class _AnimatedCircleState extends State<AnimatedCircle> with SingleTickerProvid
       animation: _animation,
       builder: (_, __) {
         return SizedBox.square(
-          dimension: widget.size,
+          dimension: widget.diameter,
           child: Center(
             child: Container(
               width: _animation.value,

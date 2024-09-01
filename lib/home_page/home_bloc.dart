@@ -23,7 +23,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeQrScanButtonDatabaseEvent>(_onButtonDatabase);
     on<HomeQrScanButtonBackEvent>(_onQrScanButtonBack);
     on<HomeGoMapUpdateEvent>(_onMapUpdate);
-    on<HomeGoMapNextEvent>(_onMapNext);
 
     _subscription = _appRepository.coordStream.listen((model) {
       add(HomeGoMapUpdateEvent(model: model));
@@ -75,11 +74,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _onMapUpdate(HomeGoMapUpdateEvent event, Emitter<HomeState> emitter) {
-    emitter(HomeGoMapState(model: event.model));
-  }
-
-  FutureOr<void> _onMapNext(HomeGoMapNextEvent event, Emitter<HomeState> emitter) async {
-    final model = await _appRepository.readCoordinate();
-    emitter(HomeGoMapState(model: model));
+    emitter(HomeGoMapState(coord: event.model));
   }
 }

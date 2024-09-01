@@ -51,10 +51,10 @@ class HomeScanSavedState extends HomeState {
 }
 
 class HomeGoMapState extends HomeState {
-  final CoordModel? model;
+  final CoordModel? coord;
 
-  HomeGoMapState({this.model}) : super(bottomItemType: BottomItemType.goMap);
+  HomeGoMapState({this.coord}) : super(bottomItemType: BottomItemType.goMap);
 
   @override
-  List<Object> get props => [...super.props, if (model != null) model!];
+  List<Object> get props => [...super.props, if (coord != null) coord!];
 }

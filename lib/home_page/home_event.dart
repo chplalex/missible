@@ -43,7 +43,3 @@ class HomeGoMapUpdateEvent extends HomeEvent {
   const HomeGoMapUpdateEvent({required this.model});
 }
 
-class HomeGoMapNextEvent extends HomeEvent {
-  const HomeGoMapNextEvent();
-}
-

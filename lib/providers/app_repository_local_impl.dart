@@ -50,7 +50,7 @@ class AppRepositoryLocalImpl implements AppRepository {
     final CoordModel newCoord;
 
     if (_lastCoord == null) {
-      newCoord = CoordModel(x: _random.nextInt(AppConstants.mapSize), y: _random.nextInt(AppConstants.mapSize));
+      newCoord = CoordModel(x: _random.nextInt(AppConstants.gridDimension), y: _random.nextInt(AppConstants.gridDimension));
     } else {
       final isCoordX = _random.nextBool();
       final ({int x, int y}) data = isCoordX
@@ -73,7 +73,7 @@ class AppRepositoryLocalImpl implements AppRepository {
   int _next(int value) {
     final doIncrement = _random.nextBool();
     return (doIncrement)
-        ? (value < AppConstants.mapSize - 1)
+        ? (value < AppConstants.gridDimension - 1)
             ? ++value
             : --value
         : (value > 0)

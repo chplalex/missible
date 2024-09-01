@@ -112,13 +112,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _body(BuildContext context, HomeState state) => switch (state) {
-        HomeScanStartState _ => _bodyScanStart(context, state),
-        HomeScanResultState _ => _bodyScanResult(context, state),
-        HomeScanDatabaseState _ => _bodyScanDatabase(context, state),
-        HomeGoMapState _ => _bodyGoMap(state),
-        _ => throw 'Unknown state $state',
-      };
+  Widget _body(BuildContext context, HomeState state) {
+    return switch (state) {
+      HomeScanStartState _ => _bodyScanStart(context, state),
+      HomeScanResultState _ => _bodyScanResult(context, state),
+      HomeScanDatabaseState _ => _bodyScanDatabase(context, state),
+      HomeGoMapState _ => _bodyGoMap(context, state),
+      _ => throw 'Unknown state $state',
+    };
+  }
 
   Widget _bodyScanStart(BuildContext context, HomeScanStartState state) {
     return Padding(
@@ -180,19 +182,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _bodyGoMap(HomeGoMapState state) {
-    return Container(
+  Widget _bodyGoMap(BuildContext context, HomeGoMapState state) {
+    return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('X: ${state.model?.x ?? 'N/A'}, Y: ${state.model?.y ?? 'N/A'}'),
-          const MapWidget(),
-          AppColoredButton(text: 'Next coord', onTap: () => _bloc.add(const HomeGoMapNextEvent())),
+          AppSectionTitle(text: "Enemy's coordinate: (X,Y) => (${_coordText(state.coord?.x)}, ${_coordText(state.coord?.y)})"),
+          const SizedBox(height: 16.0),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12.0),
+              color: Theme.of(context).colorScheme.inversePrimary,
+              border: const Border.fromBorderSide(BorderSide(color: Colors.grey))
+            ),
+            child: MapWidget(coord: state.coord),
+          ),
         ],
       ),
     );
   }
+
+  Object _coordText(int? value) => value != null ? (value + 1).toString() : 'N/A';
 
   void _onPopup(PopupType popupType) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
