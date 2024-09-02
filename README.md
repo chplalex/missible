@@ -1,16 +1,16 @@
 # missible
 
-The test project Missible
+The test project "Missible"
 
-## Getting Started
+## The key points
 
-This project is a starting point for a Flutter application.
+This project is a Flutter application with using a row of tools:
 
-A few resources to get you started if this is your first Flutter project:
+- BLoC state managment
+- mobile_scanner for QR codes scanning
+- animated widget
+- custom painted widget
+- get_it dependency injection (locator) service
+- Shared preferences to mock "Local Secret database"
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The project immitates the working with data repository. To do this the AppResository interface is created and its Mocked local implementation. Now it is possible to create a remote implementation to work with real API and inject its to the app though GetIt service.
