@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:missible/common/app_enums.dart';
@@ -38,10 +39,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr<void> _onBottomItem(HomeBottomItemEvent event, Emitter<HomeState> emitter) {
     final newState = switch (event.bottomItemType) {
       BottomItemType.qrScan => HomeScanStartState(),
-      BottomItemType.goMap => HomeGoMapState(),
+      BottomItemType.goMap => HomeGoMapState.init(),
     };
     if (event.bottomItemType == BottomItemType.goMap) {
-      _appRepository.coordStreamResume();
+      // _appRepository.coordStreamResume();
     } else {
       _appRepository.coordStreamPause();
     }
@@ -74,6 +75,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _onMapUpdate(HomeGoMapUpdateEvent event, Emitter<HomeState> emitter) {
-    emitter(HomeGoMapState(coord: event.model));
+    final oldCoords = (state as HomeGoMapState).coords;
+    final newCoords = Queue<CoordModel>.from(oldCoords);
+    newCoords.addFirst(event.model);
+    if (newCoords.length > 2) {
+      newCoords.removeLast();
+    }
+    emitter(HomeGoMapState(coords: newCoords));
   }
 }

@@ -1,16 +1,19 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:missible/common/app_constants.dart';
+import 'package:missible/common/app_typedefs.dart';
 import 'package:missible/data/coord_model.dart';
 import 'package:missible/widgets/square_grid.dart';
+import 'package:missible/widgets/widget_mover.dart';
 
 import 'animated_circle.dart';
 
 class MapWidget extends StatefulWidget {
-  final CoordModel? coord;
+  final Queue<CoordModel> coords;
 
-  const MapWidget({super.key, required this.coord});
+  const MapWidget({super.key, required this.coords});
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -46,22 +49,60 @@ class _MapWidgetState extends State<MapWidget> with SingleTickerProviderStateMix
         alignment: Alignment.topLeft,
         children: [
           SquareGrid(gridDimension: AppConstants.gridDimension, gridSize: _gridSize),
-          if (widget.coord != null) _circle(coord: widget.coord!),
+          _circle(),
         ],
       );
     });
   }
 
-  Widget _circle({required CoordModel coord}) {
+  Widget _circle() {
+    final positionStart = _positionedData(const CoordModel(x: 0, y: 0));
+    final positionEnd = _positionedData(const CoordModel(x: 2, y: 0));
     return Positioned.fill(
-      top: coord.y * (_strokeSize + _cellSize),
-      left: coord.x * (_strokeSize + _cellSize),
-      bottom: (AppConstants.gridDimension - coord.y - 1) * (_strokeSize + _cellSize),
-      right: (AppConstants.gridDimension - coord.x - 1) * (_strokeSize + _cellSize),
+      top: positionStart.top,
+      left: positionStart.left,
+      bottom: positionStart.bottom,
+      right: positionStart.right,
       child: Padding(
         padding: EdgeInsets.all(_cellSize * 0.2),
         child: AnimatedCircle(diameter: _cellSize),
       ),
     );
+    return WidgetMover(
+      startPosition: positionStart,
+      endPosition: positionEnd,
+      child: AnimatedCircle(diameter: _cellSize),
+    );
+    switch (widget.coords.length) {
+      case 0:
+        return const SizedBox.shrink();
+      case 1:
+        final position = _positionedData(widget.coords.first);
+        return Positioned.fill(
+          top: position.top,
+          left: position.left,
+          bottom: position.bottom,
+          right: position.right,
+          child: Padding(
+            padding: EdgeInsets.all(_cellSize * 0.2),
+            child: AnimatedCircle(diameter: _cellSize),
+          ),
+        );
+      default:
+        final positionStart = _positionedData(widget.coords.first);
+        final positionEnd = _positionedData(widget.coords.last);
+        return WidgetMover(
+            startPosition: positionStart,
+            endPosition: positionEnd,
+            child: AnimatedCircle(diameter: _cellSize),
+        );
+    }
   }
+
+  PositionedData _positionedData(CoordModel coord) => (
+        top: coord.y * (_strokeSize + _cellSize),
+        left: coord.x * (_strokeSize + _cellSize),
+        bottom: (AppConstants.gridDimension - coord.y - 1) * (_strokeSize + _cellSize),
+        right: (AppConstants.gridDimension - coord.x - 1) * (_strokeSize + _cellSize),
+      );
 }

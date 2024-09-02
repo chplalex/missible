@@ -46,14 +46,12 @@ class _AnimatedCircleState extends State<AnimatedCircle> with SingleTickerProvid
     return AnimatedBuilder(
       animation: _animation,
       builder: (_, __) {
-        return SizedBox.square(
-          dimension: widget.diameter,
-          child: Center(
-            child: Container(
-              width: _animation.value,
-              height: _animation.value,
-              decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-            ),
+        return FittedBox(
+          fit: BoxFit.none,
+          child: Container(
+            width: _animation.value,
+            height: _animation.value,
+            decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
           ),
         );
       },
