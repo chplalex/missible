@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:missible/common/app_constants.dart';
-import 'package:missible/common/app_typedefs.dart';
 import 'package:missible/data/coord_model.dart';
 import 'package:missible/widgets/square_grid.dart';
 import 'package:missible/widgets/widget_mover.dart';
@@ -46,7 +45,6 @@ class _MapWidgetState extends State<MapWidget> with SingleTickerProviderStateMix
       _cellSize = (_gridSize - (AppConstants.gridDimension + 1) * _strokeSize) / AppConstants.gridDimension;
 
       return Stack(
-        alignment: Alignment.topLeft,
         children: [
           SquareGrid(gridDimension: AppConstants.gridDimension, gridSize: _gridSize),
           _circle(),
@@ -56,53 +54,34 @@ class _MapWidgetState extends State<MapWidget> with SingleTickerProviderStateMix
   }
 
   Widget _circle() {
-    final positionStart = _positionedData(const CoordModel(x: 0, y: 0));
-    final positionEnd = _positionedData(const CoordModel(x: 2, y: 0));
-    return Positioned.fill(
-      top: positionStart.top,
-      left: positionStart.left,
-      bottom: positionStart.bottom,
-      right: positionStart.right,
-      child: Padding(
-        padding: EdgeInsets.all(_cellSize * 0.2),
-        child: AnimatedCircle(diameter: _cellSize),
-      ),
-    );
-    return WidgetMover(
-      startPosition: positionStart,
-      endPosition: positionEnd,
-      child: AnimatedCircle(diameter: _cellSize),
-    );
     switch (widget.coords.length) {
       case 0:
         return const SizedBox.shrink();
       case 1:
-        final position = _positionedData(widget.coords.first);
-        return Positioned.fill(
-          top: position.top,
-          left: position.left,
-          bottom: position.bottom,
-          right: position.right,
-          child: Padding(
-            padding: EdgeInsets.all(_cellSize * 0.2),
-            child: AnimatedCircle(diameter: _cellSize),
-          ),
+        final offset = _offset(widget.coords.first);
+        return Positioned(
+          left: offset.dx,
+          top: offset.dy,
+          child: _circleWidget(),
         );
       default:
-        final positionStart = _positionedData(widget.coords.first);
-        final positionEnd = _positionedData(widget.coords.last);
+        final offsetEnd = _offset(widget.coords.first);
+        final offsetBegin = _offset(widget.coords.last);
         return WidgetMover(
-            startPosition: positionStart,
-            endPosition: positionEnd,
-            child: AnimatedCircle(diameter: _cellSize),
+          offsetBegin: offsetBegin,
+          offsetEnd: offsetEnd,
+          child: _circleWidget(),
         );
     }
   }
 
-  PositionedData _positionedData(CoordModel coord) => (
-        top: coord.y * (_strokeSize + _cellSize),
-        left: coord.x * (_strokeSize + _cellSize),
-        bottom: (AppConstants.gridDimension - coord.y - 1) * (_strokeSize + _cellSize),
-        right: (AppConstants.gridDimension - coord.x - 1) * (_strokeSize + _cellSize),
+  Widget _circleWidget() => Padding(
+        padding: EdgeInsets.all(_cellSize * 0.2),
+        child: AnimatedCircle(diameter: _cellSize * 0.6),
+      );
+
+  Offset _offset(CoordModel coord) => Offset(
+        coord.x * (_strokeSize + _cellSize),
+        coord.y * (_strokeSize + _cellSize),
       );
 }

@@ -42,7 +42,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       BottomItemType.goMap => HomeGoMapState.init(),
     };
     if (event.bottomItemType == BottomItemType.goMap) {
-      // _appRepository.coordStreamResume();
+      _appRepository.coordStreamResume();
     } else {
       _appRepository.coordStreamPause();
     }

@@ -43,18 +43,22 @@ class _AnimatedCircleState extends State<AnimatedCircle> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (_, __) {
-        return FittedBox(
-          fit: BoxFit.none,
-          child: Container(
-            width: _animation.value,
-            height: _animation.value,
-            decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-          ),
-        );
-      },
+    return SizedBox(
+      width: widget.diameter,
+      height: widget.diameter,
+      child: FittedBox(
+        fit: BoxFit.none,
+        child: AnimatedBuilder(
+          animation: _animation,
+          builder: (_, __) {
+            return Container(
+              width: _animation.value,
+              height: _animation.value,
+              decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+            );
+          },
+        ),
+      ),
     );
   }
 }
