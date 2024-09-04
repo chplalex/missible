@@ -46,3 +46,4 @@ app.*.map.json
 .fvm/
 /.fvmrc
 /.metadata
+/devtools_options.yaml
