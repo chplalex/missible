@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:missible/common/app_constants.dart';
 import 'package:missible/common/app_extensions.dart';
+import 'package:missible/data/coord_model.dart';
 import 'package:missible/data/scan_model.dart';
 import 'package:missible/home_page/home_event.dart';
 import 'package:missible/popups/qr_scan_popup.dart';
@@ -187,16 +190,15 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          AppSectionTitle(text: "Enemy's coordinate: (X,Y) => (${_coordText(state.coord?.x)}, ${_coordText(state.coord?.y)})"),
+          AppSectionTitle(text: "Enemy's coordinate: (X:Y) => (${_coordsText(state.coords)})"),
           const SizedBox(height: 16.0),
           Container(
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.0),
-              color: Theme.of(context).colorScheme.inversePrimary,
-              border: const Border.fromBorderSide(BorderSide(color: Colors.grey))
-            ),
-            child: MapWidget(coord: state.coord),
+                borderRadius: BorderRadius.circular(12.0),
+                color: Theme.of(context).colorScheme.inversePrimary,
+                border: const Border.fromBorderSide(BorderSide(color: Colors.grey))),
+            child: MapWidget(coords: state.coords),
           ),
         ],
       ),
@@ -264,5 +266,9 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  String _coordsText(Queue<CoordModel> coords) {
+    return coords.isNotEmpty ? '${_coordText(coords.first.x)}:${_coordText(coords.first.y)}' : "N/A";
   }
 }

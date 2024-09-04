@@ -6,6 +6,6 @@ class AppConstants {
   static const titleQrScan = 'You have the "Missible"!';
   static const gridDimension = 10;
   static const updateCoordDurationInMillis = 3000;
-  static const animationForwardInMillis = updateCoordDurationInMillis ~/ 10;
-  static const animationReverseInMillis = updateCoordDurationInMillis ~/ 2;
+  static const animationForwardInMillis = updateCoordDurationInMillis ~/ 20;
+  static const animationReverseInMillis = updateCoordDurationInMillis ~/ 3;
 }

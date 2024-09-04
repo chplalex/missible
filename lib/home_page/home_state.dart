@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:equatable/equatable.dart';
 import 'package:missible/data/coord_model.dart';
 import 'package:missible/data/scan_model.dart';
@@ -51,10 +53,12 @@ class HomeScanSavedState extends HomeState {
 }
 
 class HomeGoMapState extends HomeState {
-  final CoordModel? coord;
+  final Queue<CoordModel> coords;
 
-  HomeGoMapState({this.coord}) : super(bottomItemType: BottomItemType.goMap);
+  HomeGoMapState({required this.coords}) : super(bottomItemType: BottomItemType.goMap);
+
+  factory HomeGoMapState.init() => HomeGoMapState(coords: Queue());
 
   @override
-  List<Object> get props => [...super.props, if (coord != null) coord!];
+  List<Object> get props => [...super.props, coords];
 }
