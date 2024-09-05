@@ -41,19 +41,14 @@ jobs:
           flutter-version: 3.24.1
       - run: flutter doctor
       - run: flutter pub get
+      - run: ls ${{ github.workspace }}
       # - run: flutter analyze
       # - run: flutter test
-      - run: flutter build apk
-      - run: ls
-      - run: ls ${{ runner.temp }}
-      - run: ls ${{ runner.temp }}/build
-      - run: ls ${{ runner.temp }}/build/app
-      - run: ls ${{ runner.temp }}/build/app/outputs
-      - run: ls ${{ runner.temp }}/build/app/outputs/flutter-apk
+      # - run: flutter build apk
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release.apk
-          path: ${{ runner.temp }}/build/app/outputs/flutter-apk/app-release.apk
-          retention-days: 3
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: app-release.apk
+      #     path: ${{ runner.temp }}/build/app/outputs/flutter-apk/app-release.apk
+      #     retention-days: 3
