@@ -15,15 +15,15 @@ permissions:
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+# concurrency:
+  # group: "pages"
+  # cancel-in-progress: false
 
 jobs:
   publish:
     permissions:
       contents: write
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: check out to main branch
         uses: actions/checkout@v4.1.7
@@ -34,5 +34,6 @@ jobs:
           flutter-version: 3.24.1
       - run: flutter doctor
       - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
       - run: flutter build ipa
-      
