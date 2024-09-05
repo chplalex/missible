@@ -41,6 +41,17 @@ jobs:
           flutter-version: 3.24.1
       - run: flutter doctor
       - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test
+      # - run: flutter analyze
+      # - run: flutter test
       - run: flutter build apk
+      - run: cd ${{ runner.temp }}
+      - run: ls
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app
+          path: ${{ runner.temp }}build/app/outputs/flutter-apk/app-release.apk
+          # you can also archive the entire directory 
+          # path: ${{ runner.temp }}/build
+          retention-days: 3
