@@ -28,11 +28,18 @@ jobs:
       - name: check out to main branch
         uses: actions/checkout@v4.1.7
 
-      - name: Set up Flutter
+      - name: setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
+      - run: java --version
+
+      - name: setup Flutter and build
         uses: subosito/flutter-action@v2
         with:
           flutter-version: 3.24.1
-      - run: flutter --version    
+      - run: flutter doctor
       - run: flutter pub get
       - run: flutter test
       - run: flutter build apk
