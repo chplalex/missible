@@ -44,8 +44,12 @@ jobs:
       # - run: flutter analyze
       # - run: flutter test
       - run: flutter build apk
-      - run: cd ${{ runner.temp }}
       - run: ls
+      - run: ls ${{ runner.temp }}
+      - run: ls ${{ runner.temp }}/build
+      - run: ls ${{ runner.temp }}/build/app
+      - run: ls ${{ runner.temp }}/build/app/outputs
+      - run: ls ${{ runner.temp }}/build/app/outputs/flutter-apk
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
